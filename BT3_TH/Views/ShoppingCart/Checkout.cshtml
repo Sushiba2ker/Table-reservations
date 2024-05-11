@@ -13,21 +13,16 @@
         <div class="card-body">
             <form asp-action="Checkout" method="post">
                 <div class="mb-3">
-                    <label for="ShippingAddress" class="form-label">
-                        <i class="fas fa-shipping-fast"></i> Đánh giá
-                    </label>
-                    <input asp-for="ShippingAddress" class="form-control" id="ShippingAddress" placeholder="Nhập đánh giá của bạn"/>
-                </div>
-                <div class="mb-3">
                     <label for="Notes" class="form-label">
                         <i class="fas fa-sticky-note"></i> Ghi chú
                     </label>
                     <textarea asp-for="Notes" class="form-control" id="Notes" rows="3" placeholder="Bạn có ghi chú gì cho nhân viên không"></textarea>
                 </div>
-                <img src='https://img.vietqr.io/image/TPB-66613052003-compact.png'/>
-                <button type="submit" class="btn btn-primary">
+                <img src='https://img.vietqr.io/image/TPB-66613052003-compact.png' width="300" height="300" />
+
+                @* <button type="submit" class="btn btn-primary">
                     <i class="fas fa-paper-plane"></i> Place Order
-                </button>
+                </button> *@
                 
             </form>
         </div>
