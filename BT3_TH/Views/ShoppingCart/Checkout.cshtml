@@ -1,0 +1,38 @@
+﻿@model Order
+<!-- Hero Start -->
+<div class="container-xxl py-3 bg-dark hero-header mb-3">
+    <div class="container my-3 py-3"></div>
+</div>
+<div class="container-xxl bg-white p-0"></div>
+<!-- Hero End -->
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">Checkout</h2>
+        </div>
+        <div class="card-body">
+            <form asp-action="Checkout" method="post">
+                <div class="mb-3">
+                    <label for="ShippingAddress" class="form-label">
+                        <i class="fas fa-shipping-fast"></i> Đánh giá
+                    </label>
+                    <input asp-for="ShippingAddress" class="form-control" id="ShippingAddress" placeholder="Nhập đánh giá của bạn"/>
+                </div>
+                <div class="mb-3">
+                    <label for="Notes" class="form-label">
+                        <i class="fas fa-sticky-note"></i> Ghi chú
+                    </label>
+                    <textarea asp-for="Notes" class="form-control" id="Notes" rows="3" placeholder="Bạn có ghi chú gì cho nhân viên không"></textarea>
+                </div>
+                <img src='https://img.vietqr.io/image/TPB-66613052003-compact.png'/>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Place Order
+                </button>
+                
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Optional: Include FontAwesome for icons -->
+<link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet">

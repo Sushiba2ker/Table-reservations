@@ -1,0 +1,107 @@
+﻿@model IEnumerable<BT3_TH.Models.Product>
+
+@{
+    ViewData["Title"] = "Home Page";
+    int numOfQuantity = 1;
+}
+
+<!-- Hero Start -->
+<div class="container-xxl py-3 bg-dark hero-header mb-3">
+    <div class="container my-3 py-3"></div>
+</div>
+<div class="container-xxl bg-white p-0"></div>
+<!-- Hero End -->
+
+<!-- Menu Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Product Catalog</h5>
+            <h1 class="mb-5">Popular Products</h1>
+        </div>
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3 justify-content-center">
+            @foreach (var item in Model)
+            {
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <img class="card-img-top" src="@Url.Content("~/images/" + item.ImageUrl)" alt="Product Image" style="height: 300px">
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">@item.Name</h5>
+                                <!-- Product price-->
+                                Price: @item.Price.ToString("#,##0")Đ
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center">
+                                <form id="addToCartForm-@item.Id" asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                                    <input type="hidden" name="productId" value="@item.Id" />
+                                    <input type="hidden" name="quantity" value="@numOfQuantity" />
+                                    <button type="submit" class="btn btn-primary mt-auto">
+                                        <i class="bi-cart-fill me-1"></i> Add to Cart
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        
+        <div class="toast" id="successToast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Product added to cart successfully.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Menu End -->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+@* Including necessary scripts to enable animations and interactions *@
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="js/site.js"></script>
+    <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var addToCartForms = document.querySelectorAll('[id^="addToCartForm-"]');
+                addToCartForms.forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        event.preventDefault();
+                        var formData = new FormData(form);
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(function (response) {
+                                if (response.ok) {
+                                    var toast = new bootstrap.Toast(document.getElementById('successToast'));
+                                    toast.show();
+                                }
+                            });
+                    });
+                });
+            });
+        </script>
+}
+

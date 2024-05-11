@@ -1,0 +1,17 @@
+@model int
+
+@{
+    ViewBag.Title = "Order Completed";
+    Layout = "_Layout";
+}
+<!-- Hero Start -->
+<div class="container-xxl py-3 bg-dark hero-header mb-3">
+    <div class="container my-3 py-3"></div>
+</div>
+<div class="container-xxl bg-white p-0"></div>
+<!-- Hero End -->
+<h2>Order Completed</h2>
+
+<p>Thank you for your order. Your order number is: @Model</p>
+
+<a href="@Url.Action("Index", "Home")">Continue Shopping</a>
