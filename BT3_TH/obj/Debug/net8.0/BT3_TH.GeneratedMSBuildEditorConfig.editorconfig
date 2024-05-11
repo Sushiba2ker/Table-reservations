@@ -17,219 +17,219 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = BT3_TH
 build_property.RootNamespace = BT3_TH
-build_property.ProjectDir = C:\Users\Admin\Desktop\DALTW\DALTWFinal\DALTW1 3\BT3_TH\
+build_property.ProjectDir = C:\Users\nhien\DOANCOSO\BT3_TH\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\Admin\Desktop\DALTW\DALTWFinal\DALTW1 3\BT3_TH
+build_property.MSBuildProjectDirectory = C:\Users\nhien\DOANCOSO\BT3_TH
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Admin/Views/Product/Add.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Admin/Views/Product/Add.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdFxBZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Admin/Views/Product/Index.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Admin/Views/Product/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Admin/Views/Shared/_Layout.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Admin/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Admin/Views/Shared/_LoginLayout.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Admin/Views/Shared/_LoginLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9Mb2dpbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Admin/Views/Shared/_User.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Admin/Views/Shared/_User.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9Vc2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/Account/ConfirmEmail.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/Account/ConfirmEmail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxDb25maXJtRW1haWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/Account/ForgotPassword.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/Account/ForgotPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/Account/Login.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/Account/Logout.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/Account/Logout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/Account/Register.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/Account/ResetPassword.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/Account/ResetPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/Account/_StatusMessage.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/Account/_StatusMessage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxfU3RhdHVzTWVzc2FnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/Account/_ViewImports.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/Account/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxfVmlld0ltcG9ydHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/Home/About.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/Home/About.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcSG9tZVxBYm91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/Home/Index.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/Home/Privacy.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/_ViewImports.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Areas/Identity/Pages/_ViewStart.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Admin/Index.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Admin/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Booking/Booking.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Booking/Booking.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xCb29raW5nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Booking/Create.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Booking/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Categories/Add.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Categories/Add.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmllc1xBZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Categories/Delete.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Categories/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmllc1xEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Categories/Index.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Categories/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmllc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Categories/Update.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Categories/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmllc1xVcGRhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Home/About.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Home/About.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBYm91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Home/Index.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Home/Menu.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Home/Menu.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxNZW51LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Home/Menubutton.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Home/Menubutton.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxNZW51YnV0dG9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Home/Privacy.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Order/Index.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Order/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Order/Revenue.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Order/Revenue.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcUmV2ZW51ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Product/Add.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Product/Add.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxBZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Product/Delete.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Product/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Product/Display.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Product/Display.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxEaXNwbGF5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Product/Index.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Product/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Product/Update.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Product/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxVcGRhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Shared/Error.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Shared/_LoginPartial.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/ShoppingCart/Checkout.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/ShoppingCart/Checkout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcHBpbmdDYXJ0XENoZWNrb3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/ShoppingCart/Index.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/ShoppingCart/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcHBpbmdDYXJ0XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/ShoppingCart/OrderCompleted.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/ShoppingCart/OrderCompleted.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcHBpbmdDYXJ0XE9yZGVyQ29tcGxldGVkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/TableLocations/Add.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/TableLocations/Add.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVMb2NhdGlvbnNcQWRkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/TableLocations/Delete.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/TableLocations/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVMb2NhdGlvbnNcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/TableLocations/Index.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/TableLocations/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVMb2NhdGlvbnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/TableLocations/Update.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/TableLocations/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVMb2NhdGlvbnNcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/_ViewImports.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/_ViewStart.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Shared/_AdminLayout.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Shared/_AdminLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = b-v5cje58a5r
 
-[C:/Users/Admin/Desktop/DALTW/DALTWFinal/DALTW1 3/BT3_TH/Views/Shared/_Layout.cshtml]
+[C:/Users/nhien/DOANCOSO/BT3_TH/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-m5zcukbh62
