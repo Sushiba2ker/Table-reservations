@@ -13,18 +13,27 @@
         <div class="card-body">
             <form asp-action="Checkout" method="post">
                 <div class="mb-3">
+                    <label for="ShippingAddress" class="form-label">
+                        <i class="fas fa-shipping-fast"></i> Bàn
+                    </label>
+                    <input asp-for="ShippingAddress" class="form-control" id="ShippingAddress" placeholder="Nhập mã bàn của bạn" />
+                </div>
+                <div class="mb-3">
                     <label for="Notes" class="form-label">
                         <i class="fas fa-sticky-note"></i> Ghi chú
                     </label>
                     <textarea asp-for="Notes" class="form-control" id="Notes" rows="3" placeholder="Bạn có ghi chú gì cho nhân viên không"></textarea>
                 </div>
                 <img src='https://img.vietqr.io/image/TPB-66613052003-compact.png' width="300" height="300" />
-
-                @* <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-paper-plane"></i> Place Order
-                </button> *@
-                
+                <a asp-action="Index" asp-controller="ShoppingCart" class="btn btn-primary">Quay về giỏ hàng</a>
+                <button type="submit" class="btn btn-success" onclick="showSuccessMessage()"> Hoàn tất đặt món</button>
             </form>
+
+            <script>
+                function showSuccessMessage() {
+                    alert("Đặt món thành công!");
+                }
+            </script>
         </div>
     </div>
 </div>

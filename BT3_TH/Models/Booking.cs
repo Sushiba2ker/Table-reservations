@@ -9,7 +9,7 @@ namespace BT3_TH.Models
 
         [Required, StringLength(50)]
         public string FullName { get; set; }
-        
+
         // Số điện thoại
         [Required, StringLength(10)]
         public string PhoneNumber { get; set; }

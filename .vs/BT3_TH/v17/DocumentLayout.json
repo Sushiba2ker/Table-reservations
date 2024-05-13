@@ -7,6 +7,22 @@
       "RelativeMoniker": "D:0:0:{D91DF9A6-2CA6-47B8-9F95-74E8BB75D0B1}|BT3_TH\\BT3_TH.csproj|solutionrelative:bt3_th\\views\\shoppingcart\\checkout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{D91DF9A6-2CA6-47B8-9F95-74E8BB75D0B1}|BT3_TH\\BT3_TH.csproj|c:\\users\\admin\\desktop\\dacs\\dacs\\bt3_th\\views\\shoppingcart\\ordercompleted.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D91DF9A6-2CA6-47B8-9F95-74E8BB75D0B1}|BT3_TH\\BT3_TH.csproj|solutionrelative:bt3_th\\views\\shoppingcart\\ordercompleted.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D91DF9A6-2CA6-47B8-9F95-74E8BB75D0B1}|BT3_TH\\BT3_TH.csproj|c:\\users\\admin\\desktop\\dacs\\dacs\\bt3_th\\views\\shoppingcart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D91DF9A6-2CA6-47B8-9F95-74E8BB75D0B1}|BT3_TH\\BT3_TH.csproj|solutionrelative:bt3_th\\views\\shoppingcart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D91DF9A6-2CA6-47B8-9F95-74E8BB75D0B1}|BT3_TH\\BT3_TH.csproj|c:\\users\\admin\\desktop\\dacs\\dacs\\bt3_th\\views\\booking\\booking.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D91DF9A6-2CA6-47B8-9F95-74E8BB75D0B1}|BT3_TH\\BT3_TH.csproj|solutionrelative:bt3_th\\views\\booking\\booking.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D91DF9A6-2CA6-47B8-9F95-74E8BB75D0B1}|BT3_TH\\BT3_TH.csproj|c:\\users\\admin\\desktop\\dacs\\dacs\\bt3_th\\views\\tablelocations\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D91DF9A6-2CA6-47B8-9F95-74E8BB75D0B1}|BT3_TH\\BT3_TH.csproj|solutionrelative:bt3_th\\views\\tablelocations\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D91DF9A6-2CA6-47B8-9F95-74E8BB75D0B1}|BT3_TH\\BT3_TH.csproj|c:\\users\\admin\\desktop\\dacs\\dacs\\bt3_th\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{D91DF9A6-2CA6-47B8-9F95-74E8BB75D0B1}|BT3_TH\\BT3_TH.csproj|solutionrelative:bt3_th\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
@@ -18,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,20 +50,68 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "OrderCompleted.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\Views\\ShoppingCart\\OrderCompleted.cshtml",
+              "RelativeDocumentMoniker": "BT3_TH\\Views\\ShoppingCart\\OrderCompleted.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\Views\\ShoppingCart\\OrderCompleted.cshtml",
+              "RelativeToolTip": "BT3_TH\\Views\\ShoppingCart\\OrderCompleted.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-12T15:35:46.466Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\Views\\TableLocations\\Index.cshtml",
+              "RelativeDocumentMoniker": "BT3_TH\\Views\\TableLocations\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\Views\\TableLocations\\Index.cshtml",
+              "RelativeToolTip": "BT3_TH\\Views\\TableLocations\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-12T15:05:12.55Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Booking.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\Views\\Booking\\Booking.cshtml",
+              "RelativeDocumentMoniker": "BT3_TH\\Views\\Booking\\Booking.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\Views\\Booking\\Booking.cshtml",
+              "RelativeToolTip": "BT3_TH\\Views\\Booking\\Booking.cshtml",
+              "ViewState": "AQIAAFUAAAAAAAAAAAAmwGsAAAAmAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-12T14:15:43.615Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\Views\\ShoppingCart\\Index.cshtml",
+              "RelativeDocumentMoniker": "BT3_TH\\Views\\ShoppingCart\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\Views\\ShoppingCart\\Index.cshtml",
+              "RelativeToolTip": "BT3_TH\\Views\\ShoppingCart\\Index.cshtml",
+              "ViewState": "AQIAADMAAAAAAAAAAAAAAFkAAABzAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-12T14:08:17.225Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Checkout.cshtml",
               "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\Views\\ShoppingCart\\Checkout.cshtml",
               "RelativeDocumentMoniker": "BT3_TH\\Views\\ShoppingCart\\Checkout.cshtml",
               "ToolTip": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\Views\\ShoppingCart\\Checkout.cshtml",
               "RelativeToolTip": "BT3_TH\\Views\\ShoppingCart\\Checkout.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAABuAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-05-11T09:21:03.443Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\appsettings.json",
               "RelativeDocumentMoniker": "BT3_TH\\appsettings.json",
@@ -55,8 +119,7 @@
               "RelativeToolTip": "BT3_TH\\appsettings.json",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-04-17T21:04:53.044Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-17T21:04:53.044Z"
             }
           ]
         }
