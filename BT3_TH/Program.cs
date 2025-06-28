@@ -17,9 +17,13 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
 builder.Services.AddRazorPages();
 
+// Repository registrations
 builder.Services.AddScoped<IProductRepository, EFProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 builder.Services.AddScoped<ITableLocationRepository, EFTableLocationRepository>();
+
+// Service layer registrations
+builder.Services.AddScoped<BT3_TH.Services.Interfaces.IProductService, BT3_TH.Services.ProductService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
