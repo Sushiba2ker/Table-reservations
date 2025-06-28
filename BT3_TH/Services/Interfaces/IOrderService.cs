@@ -36,7 +36,7 @@ public interface IOrderService
     /// <summary>
     /// Update order status
     /// </summary>
-    Task<Result> UpdateOrderStatusAsync(int orderId, string status);
+    Task<Result<OrderDto>> UpdateOrderStatusAsync(int orderId, string status);
     
     /// <summary>
     /// Get order statistics
