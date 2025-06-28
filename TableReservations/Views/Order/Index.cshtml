@@ -1,0 +1,32 @@
+@model IEnumerable<TableReservations.Models.OrderViewModel>
+
+@{
+    ViewData["Title"] = "Order List";
+    Layout = "_AdminLayout";
+}
+
+<div class="container">
+    <h2 class="mt-5">Order List</h2>
+
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Order ID</th>
+            <th>User ID</th>
+            <th>Order Date</th>
+            <th>Total Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var orderViewModel in Model)
+        {
+            <tr>
+                <td>@orderViewModel.Order.Id</td>
+                <td>@orderViewModel.Order.UserId</td>
+                <td>@orderViewModel.Order.OrderDate</td>
+                <td>@orderViewModel.TotalPrice</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
