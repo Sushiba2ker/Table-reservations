@@ -8567,26 +8567,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {}
+    "/Users/baonguyen/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\BT3_TH.csproj",
+      "projectUniqueName": "/Users/baonguyen/Desktop/Table-reservations/BT3_TH/BT3_TH.csproj",
       "projectName": "BT3_TH",
-      "projectPath": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\BT3_TH.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Desktop\\DACS\\DACS\\BT3_TH\\obj\\",
+      "projectPath": "/Users/baonguyen/Desktop/Table-reservations/BT3_TH/BT3_TH.csproj",
+      "packagesPath": "/Users/baonguyen/.nuget/packages/",
+      "outputPath": "/Users/baonguyen/Desktop/Table-reservations/BT3_TH/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/baonguyen/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -8662,7 +8660,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

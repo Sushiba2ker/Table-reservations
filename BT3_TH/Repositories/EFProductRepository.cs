@@ -23,7 +23,7 @@ namespace BT3_TH.Repositories
 
         }
 
-        public async Task<Product> GetByIdAsync(int id)
+        public async Task<Product?> GetByIdAsync(int id)
         {
             // return await _context.Products.FindAsync(id);
             // lấy thông tin kèm theo category
@@ -45,13 +45,16 @@ namespace BT3_TH.Repositories
         public async Task DeleteAsync(int id)
         {
             var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            if (product != null)
+            {
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+            }
         }
 
         string? IProductRepository.GetById(int id)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Use GetByIdAsync instead");
         }
     }
 }

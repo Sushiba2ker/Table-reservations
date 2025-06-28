@@ -19,7 +19,7 @@ namespace BT3_TH.Repositories
             return await _context.TableLocations.ToListAsync();
         }
 
-        public async Task<TableLocation> GetByIdAsync(int id)
+        public async Task<TableLocation?> GetByIdAsync(int id)
         {
             return await _context.TableLocations.FindAsync(id);
         }

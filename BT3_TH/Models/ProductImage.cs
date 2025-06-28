@@ -1,9 +1,16 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace BT3_TH.Models;
-    public class ProductImage
-    {
-        public int Id { get; set; }
-        public string Url { get; set; }
-        public int ProductId { get; set; }
-        public Product? Product { get; set; }
-    }
+
+public class ProductImage
+{
+    public int Id { get; set; }
+    
+    [Required]
+    public required string Url { get; set; }
+    
+    public int ProductId { get; set; }
+    
+    public Product? Product { get; set; }
+}
 

@@ -8,14 +8,14 @@ namespace BT3_TH.Models
         public int Id { get; set; }
 
         [Required, StringLength(50)]
-        public string FullName { get; set; }
+        public required string FullName { get; set; }
 
         // Số điện thoại
         [Required, StringLength(10)]
-        public string PhoneNumber { get; set; }
+        public required string PhoneNumber { get; set; }
 
         [Required, EmailAddress]
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         [Required]
         public DateTime DateTime { get; set; }
@@ -24,8 +24,8 @@ namespace BT3_TH.Models
         public int NumberOfGuests { get; set; }
 
         [Required]
-        public string TableLocation { get; set; }
+        public required string TableLocation { get; set; }
 
-        public string SpecialRequest { get; set; }
+        public string? SpecialRequest { get; set; }
     }
 }

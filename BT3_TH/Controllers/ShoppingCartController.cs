@@ -30,7 +30,7 @@ namespace BT3_TH.Controllers
         }
         public IActionResult Checkout()
         {
-            return View(new Order());
+            return View(new Order { UserId = "", ShippingAddress = "" });
         }
 
         [HttpPost]
@@ -43,6 +43,10 @@ namespace BT3_TH.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             order.UserId = user.Id;
             order.OrderDate = DateTime.UtcNow;
             order.TotalPrice = cart.Items.Sum(i => i.Price * i.Quantity);
@@ -74,6 +78,11 @@ namespace BT3_TH.Controllers
         public async Task<IActionResult> AddToCart(int productId, int quantity)
         {
             var product = await _productRepository.GetByIdAsync(productId);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            
             var cartItem = new CartItem
             {
                 ProductId = productId,

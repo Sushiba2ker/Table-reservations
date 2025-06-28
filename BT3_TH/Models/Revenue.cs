@@ -2,9 +2,9 @@ namespace BT3_TH.Models
 {
     public class Revenue
     {
-        public List<RevenueData> WeeklyRevenue { get; set; }
-        public List<RevenueData> MonthlyRevenue { get; set; }
-        public List<RevenueData> YearlyRevenue { get; set; }
+        public List<RevenueData> WeeklyRevenue { get; set; } = new();
+        public List<RevenueData> MonthlyRevenue { get; set; } = new();
+        public List<RevenueData> YearlyRevenue { get; set; } = new();
         public decimal TotalRevenue { get; set; }
     }
 }

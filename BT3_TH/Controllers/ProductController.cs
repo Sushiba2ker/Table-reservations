@@ -115,7 +115,11 @@ namespace BT3_TH.Controllers
             if (ModelState.IsValid)
             {
 
-                var existingProduct = await _productRepository.GetByIdAsync(id); // Giả định có phương thức GetByIdAsync
+                var existingProduct = await _productRepository.GetByIdAsync(id);
+                if (existingProduct == null)
+                {
+                    return NotFound();
+                }
 
                 // Giữ nguyên thông tin hình ảnh nếu không có hình mới được tải lên
                 if (imageUrl == null)

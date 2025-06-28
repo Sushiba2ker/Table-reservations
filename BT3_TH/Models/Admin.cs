@@ -1,7 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace BT3_TH.Models;
 
 public class Admin
 {
-    public string Username { get; set; }
-    public string Password { get; set; }
+    [Required]
+    public required string Username { get; set; }
+    
+    [Required]
+    public required string Password { get; set; }
 }
