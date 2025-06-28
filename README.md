@@ -384,7 +384,7 @@ return StatusCode(result.StatusCode, result.ErrorMessage);
 
 ## 📄 **License**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is for educational and demonstration purposes. No specific license has been applied.
 
 ---
 
