@@ -7,7 +7,7 @@ using BT3_TH.Services.Interfaces;
 namespace BT3_TH.Services;
 
 /// <summary>
-/// Table location service implementation containing business logic
+/// Table location service implementation containing business logic for table management
 /// </summary>
 public class TableLocationService : ITableLocationService
 {
@@ -30,8 +30,8 @@ public class TableLocationService : ITableLocationService
             {
                 Id = tl.Id,
                 Name = tl.Name,
-                Capacity = tl.Capacity,
-                IsAvailable = true // Will be determined based on current bookings
+                ImageUrl = tl.ImageUrl,
+                IsAvailable = true // Default to available, can be calculated based on current bookings
             }).ToList();
 
             return Result<IEnumerable<TableLocationDto>>.Success(tableLocationDtos);
@@ -62,8 +62,8 @@ public class TableLocationService : ITableLocationService
             {
                 Id = tableLocation.Id,
                 Name = tableLocation.Name,
-                Capacity = tableLocation.Capacity,
-                IsAvailable = true
+                ImageUrl = tableLocation.ImageUrl,
+                IsAvailable = true // Can be calculated based on current bookings
             };
 
             return Result<TableLocationDto>.Success(tableLocationDto);
@@ -78,17 +78,20 @@ public class TableLocationService : ITableLocationService
     {
         try
         {
-            // Check if table location name already exists
+            // Check if table location with same name already exists
             var existingTableLocations = await _tableLocationRepository.GetAllAsync();
-            if (existingTableLocations.Any(tl => tl.Name.Equals(tableLocationDto.Name, StringComparison.OrdinalIgnoreCase)))
+            var existingTableLocation = existingTableLocations.FirstOrDefault(tl => 
+                tl.Name.Equals(tableLocationDto.Name, StringComparison.OrdinalIgnoreCase));
+            
+            if (existingTableLocation != null)
             {
-                return Result<TableLocationDto>.Failure($"Table location with name '{tableLocationDto.Name}' already exists", 400);
+                return Result<TableLocationDto>.Failure("Table location with this name already exists", 400);
             }
 
             var tableLocation = new TableLocation
             {
                 Name = tableLocationDto.Name,
-                Capacity = tableLocationDto.Capacity
+                ImageUrl = tableLocationDto.ImageUrl
             };
 
             await _tableLocationRepository.AddAsync(tableLocation);
@@ -97,7 +100,7 @@ public class TableLocationService : ITableLocationService
             {
                 Id = tableLocation.Id,
                 Name = tableLocation.Name,
-                Capacity = tableLocation.Capacity,
+                ImageUrl = tableLocation.ImageUrl,
                 IsAvailable = true
             };
 
@@ -124,22 +127,27 @@ public class TableLocationService : ITableLocationService
                 return Result<TableLocationDto>.NotFound($"Table location with ID {id} not found");
             }
 
-            // Check if new name conflicts with existing table locations (excluding current one)
-            var existingTableLocations = await _tableLocationRepository.GetAllAsync();
-            if (existingTableLocations.Any(tl => tl.Id != id && tl.Name.Equals(tableLocationDto.Name, StringComparison.OrdinalIgnoreCase)))
+            // Check if another table location with same name already exists
+            var allTableLocations = await _tableLocationRepository.GetAllAsync();
+            var duplicateTableLocation = allTableLocations.FirstOrDefault(tl => 
+                tl.Id != id && tl.Name.Equals(tableLocationDto.Name, StringComparison.OrdinalIgnoreCase));
+            
+            if (duplicateTableLocation != null)
             {
-                return Result<TableLocationDto>.Failure($"Table location with name '{tableLocationDto.Name}' already exists", 400);
+                return Result<TableLocationDto>.Failure("Another table location with this name already exists", 400);
             }
 
+            // Update table location properties
             existingTableLocation.Name = tableLocationDto.Name;
-            existingTableLocation.Capacity = tableLocationDto.Capacity;
+            existingTableLocation.ImageUrl = tableLocationDto.ImageUrl;
+
             await _tableLocationRepository.UpdateAsync(existingTableLocation);
 
             var updatedTableLocationDto = new TableLocationDto
             {
                 Id = existingTableLocation.Id,
                 Name = existingTableLocation.Name,
-                Capacity = existingTableLocation.Capacity,
+                ImageUrl = existingTableLocation.ImageUrl,
                 IsAvailable = true
             };
 
@@ -166,16 +174,15 @@ public class TableLocationService : ITableLocationService
                 return Result.NotFound($"Table location with ID {id} not found");
             }
 
-            // Check if table location has active bookings
+            // Check if table has active bookings
             var bookings = await _bookingRepository.GetAllAsync();
             var hasActiveBookings = bookings.Any(b => 
-                b.TableLocationId == id && 
-                b.ReservationDate >= DateTime.Now &&
-                b.Status != "Cancelled");
-            
+                b.TableLocation.Equals(tableLocation.Name, StringComparison.OrdinalIgnoreCase) &&
+                b.DateTime >= DateTime.Now);
+
             if (hasActiveBookings)
             {
-                return Result.Failure("Cannot delete table location with active bookings. Please cancel or complete bookings first.", 400);
+                return Result.Failure("Cannot delete table location with active bookings", 400);
             }
 
             await _tableLocationRepository.DeleteAsync(id);
@@ -187,6 +194,102 @@ public class TableLocationService : ITableLocationService
         }
     }
 
+    public async Task<Result<bool>> IsTableLocationAvailableAsync(int tableLocationId, DateTime dateTime, int durationHours = 2)
+    {
+        try
+        {
+            if (tableLocationId <= 0)
+            {
+                return Result<bool>.Failure("Invalid table location ID", 400);
+            }
+
+            var tableLocation = await _tableLocationRepository.GetByIdAsync(tableLocationId);
+            if (tableLocation == null)
+            {
+                return Result<bool>.Success(false); // Non-existent table is not available
+            }
+
+            if (dateTime <= DateTime.Now)
+            {
+                return Result<bool>.Success(false); // Past dates are not available
+            }
+
+            var bookings = await _bookingRepository.GetAllAsync();
+            var endTime = dateTime.AddHours(durationHours);
+            
+            var isAvailable = !bookings.Any(b => 
+                b.TableLocation.Equals(tableLocation.Name, StringComparison.OrdinalIgnoreCase) &&
+                !(b.DateTime.AddHours(2) <= dateTime || // Booking ends before our start
+                  b.DateTime >= endTime)); // Booking starts after our end
+
+            return Result<bool>.Success(isAvailable);
+        }
+        catch (Exception ex)
+        {
+            return Result<bool>.Failure($"Error checking table availability: {ex.Message}", 500);
+        }
+    }
+
+    public async Task<Result<IEnumerable<TableLocationDto>>> GetAvailableTableLocationsAsync(DateTime dateTime, int durationHours = 2)
+    {
+        try
+        {
+            var allTableLocations = await _tableLocationRepository.GetAllAsync();
+            var availableTableLocations = new List<TableLocationDto>();
+
+            foreach (var tableLocation in allTableLocations)
+            {
+                var isAvailable = await IsTableLocationAvailableAsync(tableLocation.Id, dateTime, durationHours);
+                if (isAvailable.IsSuccess && isAvailable.Data)
+                {
+                    availableTableLocations.Add(new TableLocationDto
+                    {
+                        Id = tableLocation.Id,
+                        Name = tableLocation.Name,
+                        ImageUrl = tableLocation.ImageUrl,
+                        IsAvailable = true
+                    });
+                }
+            }
+
+            return Result<IEnumerable<TableLocationDto>>.Success(availableTableLocations);
+        }
+        catch (Exception ex)
+        {
+            return Result<IEnumerable<TableLocationDto>>.Failure($"Error retrieving available table locations: {ex.Message}", 500);
+        }
+    }
+
+    public async Task<Result<object>> GetTableLocationStatisticsAsync()
+    {
+        try
+        {
+            var tableLocations = await _tableLocationRepository.GetAllAsync();
+            var bookings = await _bookingRepository.GetAllAsync();
+            
+            var statistics = new
+            {
+                TotalTableLocations = tableLocations.Count(),
+                TotalBookings = bookings.Count(),
+                TodayBookings = bookings.Count(b => b.DateTime.Date == DateTime.Today),
+                PopularTableLocations = bookings.GroupBy(b => b.TableLocation)
+                                               .Select(g => new { TableLocation = g.Key, BookingCount = g.Count() })
+                                               .OrderByDescending(x => x.BookingCount)
+                                               .Take(5)
+                                               .ToList(),
+                AverageBookingsPerTable = tableLocations.Any() ? 
+                    bookings.Count() / (double)tableLocations.Count() : 0
+            };
+
+            return Result<object>.Success(statistics);
+        }
+        catch (Exception ex)
+        {
+            return Result<object>.Failure($"Error retrieving table location statistics: {ex.Message}", 500);
+        }
+    }
+
+    // Add TableLocationExistsAsync method as required by interface
     public async Task<Result<bool>> TableLocationExistsAsync(int id)
     {
         try
@@ -205,31 +308,30 @@ public class TableLocationService : ITableLocationService
         }
     }
 
+    // Add GetAvailableTablesAsync method as required by interface
     public async Task<Result<IEnumerable<TableLocationDto>>> GetAvailableTablesAsync(DateTime reservationDate, int numberOfGuests)
     {
         try
         {
             var tableLocations = await _tableLocationRepository.GetAllAsync();
-            var bookings = await _bookingRepository.GetAllAsync();
+            var availableTableLocations = new List<TableLocationDto>();
 
-            var availableTables = tableLocations.Where(tl => 
-                tl.Capacity >= numberOfGuests &&
-                !bookings.Any(b => 
-                    b.TableLocationId == tl.Id &&
-                    b.ReservationDate.Date == reservationDate.Date &&
-                    Math.Abs((b.ReservationDate - reservationDate).TotalHours) < 2 &&
-                    b.Status != "Cancelled")
-            );
-
-            var tableLocationDtos = availableTables.Select(tl => new TableLocationDto
+            foreach (var tableLocation in tableLocations)
             {
-                Id = tl.Id,
-                Name = tl.Name,
-                Capacity = tl.Capacity,
-                IsAvailable = true
-            }).ToList();
+                var isAvailable = await IsTableLocationAvailableAsync(tableLocation.Id, reservationDate, 2);
+                if (isAvailable.IsSuccess && isAvailable.Data)
+                {
+                    availableTableLocations.Add(new TableLocationDto
+                    {
+                        Id = tableLocation.Id,
+                        Name = tableLocation.Name,
+                        ImageUrl = tableLocation.ImageUrl,
+                        IsAvailable = true
+                    });
+                }
+            }
 
-            return Result<IEnumerable<TableLocationDto>>.Success(tableLocationDtos);
+            return Result<IEnumerable<TableLocationDto>>.Success(availableTableLocations);
         }
         catch (Exception ex)
         {

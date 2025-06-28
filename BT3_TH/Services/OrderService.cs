@@ -20,32 +20,10 @@ public class OrderService : IOrderService
         _productRepository = productRepository;
     }
 
-    public async Task<Result<IEnumerable<OrderListDto>>> GetAllOrdersAsync()
-    {
-        try
-        {
-            var orders = await _orderRepository.GetAllAsync();
-            
-            var orderDtos = orders.Select(o => new OrderListDto
-            {
-                Id = o.Id,
-                CustomerName = o.CustomerName,
-                TotalAmount = o.TotalAmount,
-                OrderDate = o.OrderDate,
-                Status = o.Status,
-                ItemCount = o.OrderDetails?.Count ?? 0
-            }).ToList();
 
-            return Result<IEnumerable<OrderListDto>>.Success(orderDtos);
-        }
-        catch (Exception ex)
-        {
-            return Result<IEnumerable<OrderListDto>>.Failure($"Error retrieving orders: {ex.Message}", 500);
-        }
-    }
 
-    // NEW METHOD: GetAllOrdersAsync with pagination
-    public async Task<Result<IEnumerable<OrderListDto>>> GetAllOrdersAsync(int page, int pageSize)
+    // GetAllOrdersAsync with pagination - fix return type to OrderListDto
+    public async Task<Result<IEnumerable<OrderListDto>>> GetAllOrdersAsync(int page = 1, int pageSize = 10)
     {
         try
         {
@@ -62,11 +40,10 @@ public class OrderService : IOrderService
             var orderDtos = paginatedOrders.Select(o => new OrderListDto
             {
                 Id = o.Id,
-                CustomerName = o.CustomerName,
-                TotalAmount = o.TotalAmount,
                 OrderDate = o.OrderDate,
-                Status = o.Status,
-                ItemCount = o.OrderDetails?.Count ?? 0
+                TotalPrice = o.TotalPrice,
+                ShippingAddress = o.ShippingAddress,
+                ItemCount = o.OrderDetails.Count
             }).ToList();
 
             return Result<IEnumerable<OrderListDto>>.Success(orderDtos);
@@ -96,22 +73,21 @@ public class OrderService : IOrderService
             var orderDto = new OrderDto
             {
                 Id = order.Id,
-                CustomerName = order.CustomerName,
-                CustomerEmail = order.CustomerEmail,
-                CustomerPhone = order.CustomerPhone,
-                CustomerAddress = order.CustomerAddress,
-                TotalAmount = order.TotalAmount,
+                UserId = order.UserId,
+                UserName = order.ApplicationUser?.UserName,
                 OrderDate = order.OrderDate,
-                Status = order.Status,
+                TotalPrice = order.TotalPrice,
+                ShippingAddress = order.ShippingAddress,
                 Notes = order.Notes,
-                OrderDetails = order.OrderDetails?.Select(od => new OrderDetailDto
+                OrderDetails = order.OrderDetails.Select(od => new OrderDetailDto
                 {
+                    Id = od.Id,
+                    OrderId = od.OrderId,
                     ProductId = od.ProductId,
-                    ProductName = od.ProductName,
+                    ProductName = od.Product?.Name,
                     Quantity = od.Quantity,
-                    UnitPrice = od.UnitPrice,
-                    TotalPrice = od.TotalPrice
-                }).ToList() ?? new List<OrderDetailDto>()
+                    Price = od.Price
+                }).ToList()
             };
 
             return Result<OrderDto>.Success(orderDto);
@@ -122,87 +98,54 @@ public class OrderService : IOrderService
         }
     }
 
-    // NEW METHOD: GetOrdersByUserAsync
-    public async Task<Result<IEnumerable<OrderListDto>>> GetOrdersByUserAsync(string userId)
+    public async Task<Result<OrderDto>> CreateOrderAsync(string userId, CheckoutDto checkoutDto)
     {
         try
         {
             if (string.IsNullOrWhiteSpace(userId))
             {
-                return Result<IEnumerable<OrderListDto>>.Failure("User ID cannot be empty", 400);
+                return Result<OrderDto>.Failure("User ID cannot be empty", 400);
             }
 
-            var orders = await _orderRepository.GetAllAsync();
-            var userOrders = orders.Where(o => o.UserId == userId);
-            
-            var orderDtos = userOrders.Select(o => new OrderListDto
+            if (!checkoutDto.Items.Any())
             {
-                Id = o.Id,
-                CustomerName = o.CustomerName,
-                TotalAmount = o.TotalAmount,
-                OrderDate = o.OrderDate,
-                Status = o.Status,
-                ItemCount = o.OrderDetails?.Count ?? 0
-            }).OrderByDescending(o => o.OrderDate).ToList();
-
-            return Result<IEnumerable<OrderListDto>>.Success(orderDtos);
-        }
-        catch (Exception ex)
-        {
-            return Result<IEnumerable<OrderListDto>>.Failure($"Error retrieving user orders: {ex.Message}", 500);
-        }
-    }
-
-    public async Task<Result<OrderDto>> CreateOrderAsync(CheckoutDto checkoutDto)
-    {
-        try
-        {
-            // Validate cart items
-            if (checkoutDto.CartItems == null || !checkoutDto.CartItems.Any())
-            {
-                return Result<OrderDto>.Failure("Cart cannot be empty", 400);
+                return Result<OrderDto>.Failure("Order must contain at least one item", 400);
             }
 
-            // Calculate total and validate products
-            decimal totalAmount = 0;
+            // Calculate total price from cart items
+            decimal totalPrice = 0;
             var orderDetails = new List<OrderDetail>();
 
-            foreach (var cartItem in checkoutDto.CartItems)
+            foreach (var item in checkoutDto.Items)
             {
-                var product = await _productRepository.GetByIdAsync(cartItem.ProductId);
+                var product = await _productRepository.GetByIdAsync(item.ProductId);
                 if (product == null)
                 {
-                    return Result<OrderDto>.Failure($"Product with ID {cartItem.ProductId} not found", 400);
+                    return Result<OrderDto>.Failure($"Product with ID {item.ProductId} not found", 400);
                 }
 
-                if (cartItem.Quantity <= 0)
+                if (item.Quantity <= 0)
                 {
-                    return Result<OrderDto>.Failure("Quantity must be greater than 0", 400);
+                    return Result<OrderDto>.Failure("Quantity must be positive", 400);
                 }
 
-                var unitPrice = product.Price;
-                var totalPrice = unitPrice * cartItem.Quantity;
-                totalAmount += totalPrice;
+                var lineTotal = product.Price * item.Quantity;
+                totalPrice += lineTotal;
 
                 orderDetails.Add(new OrderDetail
                 {
-                    ProductId = product.Id,
-                    ProductName = product.Name,
-                    Quantity = cartItem.Quantity,
-                    UnitPrice = unitPrice,
-                    TotalPrice = totalPrice
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    Price = lineTotal // Store line total in Price field
                 });
             }
 
             var order = new Order
             {
-                CustomerName = checkoutDto.CustomerName,
-                CustomerEmail = checkoutDto.CustomerEmail,
-                CustomerPhone = checkoutDto.CustomerPhone,
-                CustomerAddress = checkoutDto.CustomerAddress,
-                TotalAmount = totalAmount,
+                UserId = userId,
                 OrderDate = DateTime.Now,
-                Status = "Pending",
+                TotalPrice = totalPrice,
+                ShippingAddress = checkoutDto.ShippingAddress,
                 Notes = checkoutDto.Notes,
                 OrderDetails = orderDetails
             };
@@ -212,21 +155,20 @@ public class OrderService : IOrderService
             var createdOrderDto = new OrderDto
             {
                 Id = order.Id,
-                CustomerName = order.CustomerName,
-                CustomerEmail = order.CustomerEmail,
-                CustomerPhone = order.CustomerPhone,
-                CustomerAddress = order.CustomerAddress,
-                TotalAmount = order.TotalAmount,
+                UserId = order.UserId,
+                UserName = null, // Will be populated if navigation property is loaded
                 OrderDate = order.OrderDate,
-                Status = order.Status,
+                TotalPrice = order.TotalPrice,
+                ShippingAddress = order.ShippingAddress,
                 Notes = order.Notes,
                 OrderDetails = order.OrderDetails.Select(od => new OrderDetailDto
                 {
+                    Id = od.Id,
+                    OrderId = od.OrderId,
                     ProductId = od.ProductId,
-                    ProductName = od.ProductName,
+                    ProductName = null, // Will be populated if navigation property is loaded
                     Quantity = od.Quantity,
-                    UnitPrice = od.UnitPrice,
-                    TotalPrice = od.TotalPrice
+                    Price = od.Price
                 }).ToList()
             };
 
@@ -238,130 +180,7 @@ public class OrderService : IOrderService
         }
     }
 
-    // NEW METHOD: ProcessCheckoutAsync
-    public async Task<Result<OrderDto>> ProcessCheckoutAsync(CheckoutDto checkoutDto, string userId)
-    {
-        try
-        {
-            // Validate cart items
-            if (checkoutDto.CartItems == null || !checkoutDto.CartItems.Any())
-            {
-                return Result<OrderDto>.Failure("Cart cannot be empty", 400);
-            }
-
-            // Calculate total and validate products
-            decimal totalAmount = 0;
-            var orderDetails = new List<OrderDetail>();
-
-            foreach (var cartItem in checkoutDto.CartItems)
-            {
-                var product = await _productRepository.GetByIdAsync(cartItem.ProductId);
-                if (product == null)
-                {
-                    return Result<OrderDto>.Failure($"Product with ID {cartItem.ProductId} not found", 400);
-                }
-
-                if (cartItem.Quantity <= 0)
-                {
-                    return Result<OrderDto>.Failure("Quantity must be greater than 0", 400);
-                }
-
-                var unitPrice = product.Price;
-                var totalPrice = unitPrice * cartItem.Quantity;
-                totalAmount += totalPrice;
-
-                orderDetails.Add(new OrderDetail
-                {
-                    ProductId = product.Id,
-                    ProductName = product.Name,
-                    Quantity = cartItem.Quantity,
-                    UnitPrice = unitPrice,
-                    TotalPrice = totalPrice
-                });
-            }
-
-            var order = new Order
-            {
-                UserId = userId,
-                CustomerName = checkoutDto.CustomerName,
-                CustomerEmail = checkoutDto.CustomerEmail,
-                CustomerPhone = checkoutDto.CustomerPhone,
-                CustomerAddress = checkoutDto.CustomerAddress,
-                TotalAmount = totalAmount,
-                OrderDate = DateTime.Now,
-                Status = "Confirmed", // Directly confirmed after checkout
-                Notes = checkoutDto.Notes,
-                OrderDetails = orderDetails
-            };
-
-            await _orderRepository.AddAsync(order);
-
-            var createdOrderDto = new OrderDto
-            {
-                Id = order.Id,
-                CustomerName = order.CustomerName,
-                CustomerEmail = order.CustomerEmail,
-                CustomerPhone = order.CustomerPhone,
-                CustomerAddress = order.CustomerAddress,
-                TotalAmount = order.TotalAmount,
-                OrderDate = order.OrderDate,
-                Status = order.Status,
-                Notes = order.Notes,
-                OrderDetails = order.OrderDetails.Select(od => new OrderDetailDto
-                {
-                    ProductId = od.ProductId,
-                    ProductName = od.ProductName,
-                    Quantity = od.Quantity,
-                    UnitPrice = od.UnitPrice,
-                    TotalPrice = od.TotalPrice
-                }).ToList()
-            };
-
-            return Result<OrderDto>.Success(createdOrderDto, 201);
-        }
-        catch (Exception ex)
-        {
-            return Result<OrderDto>.Failure($"Error processing checkout: {ex.Message}", 500);
-        }
-    }
-
-    // NEW METHOD: CalculateOrderTotalAsync
-    public async Task<Result<decimal>> CalculateOrderTotalAsync(List<CartItemDto> cartItems)
-    {
-        try
-        {
-            if (cartItems == null || !cartItems.Any())
-            {
-                return Result<decimal>.Success(0);
-            }
-
-            decimal totalAmount = 0;
-
-            foreach (var cartItem in cartItems)
-            {
-                var product = await _productRepository.GetByIdAsync(cartItem.ProductId);
-                if (product == null)
-                {
-                    return Result<decimal>.Failure($"Product with ID {cartItem.ProductId} not found", 400);
-                }
-
-                if (cartItem.Quantity <= 0)
-                {
-                    return Result<decimal>.Failure("Quantity must be greater than 0", 400);
-                }
-
-                totalAmount += product.Price * cartItem.Quantity;
-            }
-
-            return Result<decimal>.Success(totalAmount);
-        }
-        catch (Exception ex)
-        {
-            return Result<decimal>.Failure($"Error calculating order total: {ex.Message}", 500);
-        }
-    }
-
-    public async Task<Result<OrderDto>> UpdateOrderStatusAsync(int id, string status)
+    public async Task<Result<OrderDto>> UpdateOrderAsync(int id, CheckoutDto checkoutDto)
     {
         try
         {
@@ -370,48 +189,79 @@ public class OrderService : IOrderService
                 return Result<OrderDto>.Failure("Invalid order ID", 400);
             }
 
-            if (string.IsNullOrWhiteSpace(status))
-            {
-                return Result<OrderDto>.Failure("Status cannot be empty", 400);
-            }
-
-            var validStatuses = new[] { "Pending", "Confirmed", "Preparing", "Ready", "Completed", "Cancelled" };
-            if (!validStatuses.Contains(status))
-            {
-                return Result<OrderDto>.Failure($"Invalid status. Valid statuses are: {string.Join(", ", validStatuses)}", 400);
-            }
-
-            var order = await _orderRepository.GetByIdAsync(id);
-            if (order == null)
+            var existingOrder = await _orderRepository.GetByIdAsync(id);
+            if (existingOrder == null)
             {
                 return Result<OrderDto>.NotFound($"Order with ID {id} not found");
             }
 
-            order.Status = status;
-            await _orderRepository.UpdateAsync(order);
+            // Recalculate total price
+            decimal totalPrice = 0;
+            var newOrderDetails = new List<OrderDetail>();
+
+            foreach (var item in checkoutDto.Items)
+            {
+                var product = await _productRepository.GetByIdAsync(item.ProductId);
+                if (product == null)
+                {
+                    return Result<OrderDto>.Failure($"Product with ID {item.ProductId} not found", 400);
+                }
+
+                var lineTotal = product.Price * item.Quantity;
+                totalPrice += lineTotal;
+
+                newOrderDetails.Add(new OrderDetail
+                {
+                    OrderId = id,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    Price = lineTotal
+                });
+            }
+
+            // Update order properties
+            existingOrder.TotalPrice = totalPrice;
+            existingOrder.ShippingAddress = checkoutDto.ShippingAddress;
+            existingOrder.Notes = checkoutDto.Notes;
+            existingOrder.OrderDetails = newOrderDetails;
+
+            await _orderRepository.UpdateAsync(existingOrder);
 
             var updatedOrderDto = new OrderDto
             {
-                Id = order.Id,
-                CustomerName = order.CustomerName,
-                CustomerEmail = order.CustomerEmail,
-                CustomerPhone = order.CustomerPhone,
-                CustomerAddress = order.CustomerAddress,
-                TotalAmount = order.TotalAmount,
-                OrderDate = order.OrderDate,
-                Status = order.Status,
-                Notes = order.Notes,
-                OrderDetails = order.OrderDetails?.Select(od => new OrderDetailDto
+                Id = existingOrder.Id,
+                UserId = existingOrder.UserId,
+                UserName = existingOrder.ApplicationUser?.UserName,
+                OrderDate = existingOrder.OrderDate,
+                TotalPrice = existingOrder.TotalPrice,
+                ShippingAddress = existingOrder.ShippingAddress,
+                Notes = existingOrder.Notes,
+                OrderDetails = existingOrder.OrderDetails.Select(od => new OrderDetailDto
                 {
+                    Id = od.Id,
+                    OrderId = od.OrderId,
                     ProductId = od.ProductId,
-                    ProductName = od.ProductName,
+                    ProductName = od.Product?.Name,
                     Quantity = od.Quantity,
-                    UnitPrice = od.UnitPrice,
-                    TotalPrice = od.TotalPrice
-                }).ToList() ?? new List<OrderDetailDto>()
+                    Price = od.Price
+                }).ToList()
             };
 
             return Result<OrderDto>.Success(updatedOrderDto);
+        }
+        catch (Exception ex)
+        {
+            return Result<OrderDto>.Failure($"Error updating order: {ex.Message}", 500);
+        }
+    }
+
+    public async Task<Result<OrderDto>> UpdateOrderStatusAsync(int id, string status)
+    {
+        try
+        {
+            // Note: Order model doesn't have Status field, this method may need to be removed
+            // or we need to add Status to the Order model
+            return Result<OrderDto>.Failure("Order status update not supported - no Status field in model", 400);
         }
         catch (Exception ex)
         {
@@ -434,12 +284,6 @@ public class OrderService : IOrderService
                 return Result.NotFound($"Order with ID {id} not found");
             }
 
-            // Only allow deletion of pending or cancelled orders
-            if (order.Status != "Pending" && order.Status != "Cancelled")
-            {
-                return Result.Failure("Only pending or cancelled orders can be deleted", 400);
-            }
-
             await _orderRepository.DeleteAsync(id);
             return Result.Success(204);
         }
@@ -449,80 +293,65 @@ public class OrderService : IOrderService
         }
     }
 
-    public async Task<Result<IEnumerable<OrderListDto>>> GetOrdersByStatusAsync(string status)
+
+
+    public async Task<Result<IEnumerable<OrderDto>>> GetOrdersByDateRangeAsync(DateTime startDate, DateTime endDate)
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(status))
+            if (startDate > endDate)
             {
-                return Result<IEnumerable<OrderListDto>>.Failure("Status cannot be empty", 400);
+                return Result<IEnumerable<OrderDto>>.Failure("Start date cannot be later than end date", 400);
             }
 
             var orders = await _orderRepository.GetAllAsync();
-            var filteredOrders = orders.Where(o => o.Status.Equals(status, StringComparison.OrdinalIgnoreCase));
+            var filteredOrders = orders.Where(o => 
+                o.OrderDate.Date >= startDate.Date && 
+                o.OrderDate.Date <= endDate.Date);
             
-            var orderDtos = filteredOrders.Select(o => new OrderListDto
+            var orderDtos = filteredOrders.Select(o => new OrderDto
             {
                 Id = o.Id,
-                CustomerName = o.CustomerName,
-                TotalAmount = o.TotalAmount,
+                UserId = o.UserId,
+                UserName = o.ApplicationUser?.UserName,
                 OrderDate = o.OrderDate,
-                Status = o.Status,
-                ItemCount = o.OrderDetails?.Count ?? 0
-            }).ToList();
+                TotalPrice = o.TotalPrice,
+                ShippingAddress = o.ShippingAddress,
+                Notes = o.Notes,
+                OrderDetails = o.OrderDetails.Select(od => new OrderDetailDto
+                {
+                    Id = od.Id,
+                    OrderId = od.OrderId,
+                    ProductId = od.ProductId,
+                    ProductName = od.Product?.Name,
+                    Quantity = od.Quantity,
+                    Price = od.Price
+                }).ToList()
+            }).OrderByDescending(o => o.OrderDate).ToList();
 
-            return Result<IEnumerable<OrderListDto>>.Success(orderDtos);
+            return Result<IEnumerable<OrderDto>>.Success(orderDtos);
         }
         catch (Exception ex)
         {
-            return Result<IEnumerable<OrderListDto>>.Failure($"Error retrieving orders by status: {ex.Message}", 500);
+            return Result<IEnumerable<OrderDto>>.Failure($"Error retrieving orders by date range: {ex.Message}", 500);
         }
     }
 
-    public async Task<Result<decimal>> GetTotalRevenueAsync(DateTime? startDate = null, DateTime? endDate = null)
+    public async Task<Result<IEnumerable<OrderDto>>> GetOrdersByStatusAsync(string status)
     {
         try
         {
-            var orders = await _orderRepository.GetAllAsync();
-            
-            var filteredOrders = orders.Where(o => 
-                o.Status == "Completed" &&
-                (startDate == null || o.OrderDate >= startDate) &&
-                (endDate == null || o.OrderDate <= endDate)
-            );
-
-            var totalRevenue = filteredOrders.Sum(o => o.TotalAmount);
-            
-            return Result<decimal>.Success(totalRevenue);
+            // Note: Order model doesn't have Status field
+            // This method might not be applicable or we need to add Status to model
+            return Result<IEnumerable<OrderDto>>.Failure("Order status filtering not supported - no Status field in model", 400);
         }
         catch (Exception ex)
         {
-            return Result<decimal>.Failure($"Error calculating total revenue: {ex.Message}", 500);
+            return Result<IEnumerable<OrderDto>>.Failure($"Error retrieving orders by status: {ex.Message}", 500);
         }
     }
 
-    public async Task<Result<int>> GetOrderCountAsync(DateTime? startDate = null, DateTime? endDate = null)
-    {
-        try
-        {
-            var orders = await _orderRepository.GetAllAsync();
-            
-            var filteredOrders = orders.Where(o => 
-                (startDate == null || o.OrderDate >= startDate) &&
-                (endDate == null || o.OrderDate <= endDate)
-            );
-
-            var orderCount = filteredOrders.Count();
-            
-            return Result<int>.Success(orderCount);
-        }
-        catch (Exception ex)
-        {
-            return Result<int>.Failure($"Error counting orders: {ex.Message}", 500);
-        }
-    }
-
-    // NEW METHOD: GetOrderStatisticsAsync
+    // GetOrderStatisticsAsync
     public async Task<Result<object>> GetOrderStatisticsAsync()
     {
         try
@@ -532,19 +361,18 @@ public class OrderService : IOrderService
             var statistics = new
             {
                 TotalOrders = orders.Count(),
-                PendingOrders = orders.Count(o => o.Status == "Pending"),
-                ConfirmedOrders = orders.Count(o => o.Status == "Confirmed"),
-                PreparingOrders = orders.Count(o => o.Status == "Preparing"),
-                ReadyOrders = orders.Count(o => o.Status == "Ready"),
-                CompletedOrders = orders.Count(o => o.Status == "Completed"),
-                CancelledOrders = orders.Count(o => o.Status == "Cancelled"),
                 TodayOrders = orders.Count(o => o.OrderDate.Date == DateTime.Today),
                 ThisWeekOrders = orders.Count(o => o.OrderDate.Date >= DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek) && 
                                                    o.OrderDate.Date < DateTime.Today.AddDays(7 - (int)DateTime.Today.DayOfWeek)),
                 ThisMonthOrders = orders.Count(o => o.OrderDate.Month == DateTime.Now.Month && 
                                                     o.OrderDate.Year == DateTime.Now.Year),
-                TotalRevenue = orders.Where(o => o.Status == "Completed").Sum(o => o.TotalAmount),
-                AverageOrderValue = orders.Any() ? orders.Average(o => o.TotalAmount) : 0
+                TotalRevenue = orders.Sum(o => o.TotalPrice),
+                AverageOrderValue = orders.Any() ? orders.Average(o => o.TotalPrice) : 0,
+                TopCustomers = orders.GroupBy(o => o.UserId)
+                                    .Select(g => new { UserId = g.Key, OrderCount = g.Count(), TotalSpent = g.Sum(o => o.TotalPrice) })
+                                    .OrderByDescending(x => x.TotalSpent)
+                                    .Take(5)
+                                    .ToList()
             };
 
             return Result<object>.Success(statistics);
@@ -552,6 +380,79 @@ public class OrderService : IOrderService
         catch (Exception ex)
         {
             return Result<object>.Failure($"Error retrieving order statistics: {ex.Message}", 500);
+        }
+    }
+
+    // Add ProcessCheckoutAsync method as required by interface
+    public async Task<Result<OrderDto>> ProcessCheckoutAsync(CheckoutDto checkoutDto, string userId)
+    {
+        // Delegate to CreateOrderAsync with parameters in correct order
+        return await CreateOrderAsync(userId, checkoutDto);
+    }
+
+    // Add CalculateOrderTotalAsync method as required by interface
+    public async Task<Result<decimal>> CalculateOrderTotalAsync(List<CartItemDto> items)
+    {
+        try
+        {
+            if (items == null || !items.Any())
+            {
+                return Result<decimal>.Success(0);
+            }
+
+            decimal totalAmount = 0;
+
+            foreach (var item in items)
+            {
+                var product = await _productRepository.GetByIdAsync(item.ProductId);
+                if (product == null)
+                {
+                    return Result<decimal>.Failure($"Product with ID {item.ProductId} not found", 400);
+                }
+
+                if (item.Quantity <= 0)
+                {
+                    return Result<decimal>.Failure("Quantity must be positive", 400);
+                }
+
+                totalAmount += product.Price * item.Quantity;
+            }
+
+            return Result<decimal>.Success(totalAmount);
+        }
+        catch (Exception ex)
+        {
+            return Result<decimal>.Failure($"Error calculating order total: {ex.Message}", 500);
+        }
+    }
+
+    // Add GetOrdersByUserAsync method as required by interface
+    public async Task<Result<IEnumerable<OrderListDto>>> GetOrdersByUserAsync(string userId)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Result<IEnumerable<OrderListDto>>.Failure("User ID cannot be empty", 400);
+            }
+
+            var orders = await _orderRepository.GetAllAsync();
+            var userOrders = orders.Where(o => o.UserId == userId);
+            
+            var orderDtos = userOrders.Select(o => new OrderListDto
+            {
+                Id = o.Id,
+                OrderDate = o.OrderDate,
+                TotalPrice = o.TotalPrice,
+                ShippingAddress = o.ShippingAddress,
+                ItemCount = o.OrderDetails.Count
+            }).OrderByDescending(o => o.OrderDate).ToList();
+
+            return Result<IEnumerable<OrderListDto>>.Success(orderDtos);
+        }
+        catch (Exception ex)
+        {
+            return Result<IEnumerable<OrderListDto>>.Failure($"Error retrieving user orders: {ex.Message}", 500);
         }
     }
 } 

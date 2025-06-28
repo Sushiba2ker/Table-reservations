@@ -29,15 +29,14 @@ public class BookingService : IBookingService
             var bookingDtos = bookings.Select(b => new BookingDto
             {
                 Id = b.Id,
-                CustomerName = b.CustomerName,
-                CustomerEmail = b.CustomerEmail,
-                CustomerPhone = b.CustomerPhone,
-                TableLocationId = b.TableLocationId,
-                ReservationDate = b.ReservationDate,
+                FullName = b.FullName,
+                Email = b.Email,
+                PhoneNumber = b.PhoneNumber,
+                DateTime = b.DateTime,
                 NumberOfGuests = b.NumberOfGuests,
-                SpecialRequests = b.SpecialRequests,
-                Status = b.Status,
-                CreatedAt = b.CreatedAt
+                TableLocation = b.TableLocation,
+                SpecialRequest = b.SpecialRequest,
+                CreatedAt = DateTime.Now // Model doesn't have CreatedAt, set current time
             }).ToList();
 
             return Result<IEnumerable<BookingDto>>.Success(bookingDtos);
@@ -48,7 +47,7 @@ public class BookingService : IBookingService
         }
     }
 
-    // NEW METHOD: GetAllBookingsAsync with pagination
+    // GetAllBookingsAsync with pagination
     public async Task<Result<IEnumerable<BookingDto>>> GetAllBookingsAsync(int page, int pageSize)
     {
         try
@@ -66,15 +65,14 @@ public class BookingService : IBookingService
             var bookingDtos = paginatedBookings.Select(b => new BookingDto
             {
                 Id = b.Id,
-                CustomerName = b.CustomerName,
-                CustomerEmail = b.CustomerEmail,
-                CustomerPhone = b.CustomerPhone,
-                TableLocationId = b.TableLocationId,
-                ReservationDate = b.ReservationDate,
+                FullName = b.FullName,
+                Email = b.Email,
+                PhoneNumber = b.PhoneNumber,
+                DateTime = b.DateTime,
                 NumberOfGuests = b.NumberOfGuests,
-                SpecialRequests = b.SpecialRequests,
-                Status = b.Status,
-                CreatedAt = b.CreatedAt
+                TableLocation = b.TableLocation,
+                SpecialRequest = b.SpecialRequest,
+                CreatedAt = DateTime.Now
             }).ToList();
 
             return Result<IEnumerable<BookingDto>>.Success(bookingDtos);
@@ -104,15 +102,14 @@ public class BookingService : IBookingService
             var bookingDto = new BookingDto
             {
                 Id = booking.Id,
-                CustomerName = booking.CustomerName,
-                CustomerEmail = booking.CustomerEmail,
-                CustomerPhone = booking.CustomerPhone,
-                TableLocationId = booking.TableLocationId,
-                ReservationDate = booking.ReservationDate,
+                FullName = booking.FullName,
+                Email = booking.Email,
+                PhoneNumber = booking.PhoneNumber,
+                DateTime = booking.DateTime,
                 NumberOfGuests = booking.NumberOfGuests,
-                SpecialRequests = booking.SpecialRequests,
-                Status = booking.Status,
-                CreatedAt = booking.CreatedAt
+                TableLocation = booking.TableLocation,
+                SpecialRequest = booking.SpecialRequest,
+                CreatedAt = DateTime.Now
             };
 
             return Result<BookingDto>.Success(bookingDto);
@@ -128,25 +125,17 @@ public class BookingService : IBookingService
         try
         {
             // Validate reservation date
-            if (bookingDto.ReservationDate <= DateTime.Now)
+            if (bookingDto.DateTime <= DateTime.Now)
             {
                 return Result<BookingDto>.Failure("Reservation date must be in the future", 400);
             }
 
-            // Check if table location exists
-            var tableLocation = await _tableLocationRepository.GetByIdAsync(bookingDto.TableLocationId);
-            if (tableLocation == null)
-            {
-                return Result<BookingDto>.Failure($"Table location with ID {bookingDto.TableLocationId} not found", 400);
-            }
-
-            // Check table availability
+            // Check table availability for the specific table location string
             var existingBookings = await _bookingRepository.GetAllAsync();
             var isTableAvailable = !existingBookings.Any(b => 
-                b.TableLocationId == bookingDto.TableLocationId &&
-                b.ReservationDate.Date == bookingDto.ReservationDate.Date &&
-                Math.Abs((b.ReservationDate - bookingDto.ReservationDate).TotalHours) < 2 &&
-                b.Status != "Cancelled");
+                b.TableLocation.Equals(bookingDto.TableLocation, StringComparison.OrdinalIgnoreCase) &&
+                b.DateTime.Date == bookingDto.DateTime.Date &&
+                Math.Abs((b.DateTime - bookingDto.DateTime).TotalHours) < 2);
 
             if (!isTableAvailable)
             {
@@ -155,15 +144,13 @@ public class BookingService : IBookingService
 
             var booking = new Booking
             {
-                CustomerName = bookingDto.CustomerName,
-                CustomerEmail = bookingDto.CustomerEmail,
-                CustomerPhone = bookingDto.CustomerPhone,
-                TableLocationId = bookingDto.TableLocationId,
-                ReservationDate = bookingDto.ReservationDate,
+                FullName = bookingDto.FullName,
+                Email = bookingDto.Email,
+                PhoneNumber = bookingDto.PhoneNumber,
+                DateTime = bookingDto.DateTime,
                 NumberOfGuests = bookingDto.NumberOfGuests,
-                SpecialRequests = bookingDto.SpecialRequests,
-                Status = "Confirmed",
-                CreatedAt = DateTime.Now
+                TableLocation = bookingDto.TableLocation,
+                SpecialRequest = bookingDto.SpecialRequest
             };
 
             await _bookingRepository.AddAsync(booking);
@@ -171,15 +158,14 @@ public class BookingService : IBookingService
             var createdBookingDto = new BookingDto
             {
                 Id = booking.Id,
-                CustomerName = booking.CustomerName,
-                CustomerEmail = booking.CustomerEmail,
-                CustomerPhone = booking.CustomerPhone,
-                TableLocationId = booking.TableLocationId,
-                ReservationDate = booking.ReservationDate,
+                FullName = booking.FullName,
+                Email = booking.Email,
+                PhoneNumber = booking.PhoneNumber,
+                DateTime = booking.DateTime,
                 NumberOfGuests = booking.NumberOfGuests,
-                SpecialRequests = booking.SpecialRequests,
-                Status = booking.Status,
-                CreatedAt = booking.CreatedAt
+                TableLocation = booking.TableLocation,
+                SpecialRequest = booking.SpecialRequest,
+                CreatedAt = DateTime.Now
             };
 
             return Result<BookingDto>.Success(createdBookingDto, 201);
@@ -190,7 +176,7 @@ public class BookingService : IBookingService
         }
     }
 
-    // NEW METHOD: UpdateBookingAsync
+    // UpdateBookingAsync
     public async Task<Result<BookingDto>> UpdateBookingAsync(int id, CreateBookingDto bookingDto)
     {
         try
@@ -207,41 +193,33 @@ public class BookingService : IBookingService
             }
 
             // Validate reservation date
-            if (bookingDto.ReservationDate <= DateTime.Now)
+            if (bookingDto.DateTime <= DateTime.Now)
             {
                 return Result<BookingDto>.Failure("Reservation date must be in the future", 400);
             }
 
-            // Check if table location exists
-            var tableLocation = await _tableLocationRepository.GetByIdAsync(bookingDto.TableLocationId);
-            if (tableLocation == null)
-            {
-                return Result<BookingDto>.Failure($"Table location with ID {bookingDto.TableLocationId} not found", 400);
-            }
-
             // Update booking properties
-            existingBooking.CustomerName = bookingDto.CustomerName;
-            existingBooking.CustomerEmail = bookingDto.CustomerEmail;
-            existingBooking.CustomerPhone = bookingDto.CustomerPhone;
-            existingBooking.TableLocationId = bookingDto.TableLocationId;
-            existingBooking.ReservationDate = bookingDto.ReservationDate;
+            existingBooking.FullName = bookingDto.FullName;
+            existingBooking.Email = bookingDto.Email;
+            existingBooking.PhoneNumber = bookingDto.PhoneNumber;
+            existingBooking.DateTime = bookingDto.DateTime;
             existingBooking.NumberOfGuests = bookingDto.NumberOfGuests;
-            existingBooking.SpecialRequests = bookingDto.SpecialRequests;
+            existingBooking.TableLocation = bookingDto.TableLocation;
+            existingBooking.SpecialRequest = bookingDto.SpecialRequest;
 
             await _bookingRepository.UpdateAsync(existingBooking);
 
             var updatedBookingDto = new BookingDto
             {
                 Id = existingBooking.Id,
-                CustomerName = existingBooking.CustomerName,
-                CustomerEmail = existingBooking.CustomerEmail,
-                CustomerPhone = existingBooking.CustomerPhone,
-                TableLocationId = existingBooking.TableLocationId,
-                ReservationDate = existingBooking.ReservationDate,
+                FullName = existingBooking.FullName,
+                Email = existingBooking.Email,
+                PhoneNumber = existingBooking.PhoneNumber,
+                DateTime = existingBooking.DateTime,
                 NumberOfGuests = existingBooking.NumberOfGuests,
-                SpecialRequests = existingBooking.SpecialRequests,
-                Status = existingBooking.Status,
-                CreatedAt = existingBooking.CreatedAt
+                TableLocation = existingBooking.TableLocation,
+                SpecialRequest = existingBooking.SpecialRequest,
+                CreatedAt = DateTime.Now
             };
 
             return Result<BookingDto>.Success(updatedBookingDto);
@@ -256,46 +234,9 @@ public class BookingService : IBookingService
     {
         try
         {
-            if (id <= 0)
-            {
-                return Result<BookingDto>.Failure("Invalid booking ID", 400);
-            }
-
-            if (string.IsNullOrWhiteSpace(status))
-            {
-                return Result<BookingDto>.Failure("Status cannot be empty", 400);
-            }
-
-            var validStatuses = new[] { "Confirmed", "Completed", "Cancelled", "No-Show" };
-            if (!validStatuses.Contains(status))
-            {
-                return Result<BookingDto>.Failure($"Invalid status. Valid statuses are: {string.Join(", ", validStatuses)}", 400);
-            }
-
-            var booking = await _bookingRepository.GetByIdAsync(id);
-            if (booking == null)
-            {
-                return Result<BookingDto>.NotFound($"Booking with ID {id} not found");
-            }
-
-            booking.Status = status;
-            await _bookingRepository.UpdateAsync(booking);
-
-            var updatedBookingDto = new BookingDto
-            {
-                Id = booking.Id,
-                CustomerName = booking.CustomerName,
-                CustomerEmail = booking.CustomerEmail,
-                CustomerPhone = booking.CustomerPhone,
-                TableLocationId = booking.TableLocationId,
-                ReservationDate = booking.ReservationDate,
-                NumberOfGuests = booking.NumberOfGuests,
-                SpecialRequests = booking.SpecialRequests,
-                Status = booking.Status,
-                CreatedAt = booking.CreatedAt
-            };
-
-            return Result<BookingDto>.Success(updatedBookingDto);
+            // Note: Booking model doesn't have Status field, this method may need to be removed
+            // or we need to add Status to the Booking model
+            return Result<BookingDto>.Failure("Booking status update not supported - no Status field in model", 400);
         }
         catch (Exception ex)
         {
@@ -303,7 +244,7 @@ public class BookingService : IBookingService
         }
     }
 
-    // NEW METHOD: CancelBookingAsync
+    // CancelBookingAsync - since no Status field, we'll delete the booking
     public async Task<Result> CancelBookingAsync(int id)
     {
         try
@@ -319,8 +260,8 @@ public class BookingService : IBookingService
                 return Result.NotFound($"Booking with ID {id} not found");
             }
 
-            booking.Status = "Cancelled";
-            await _bookingRepository.UpdateAsync(booking);
+            // Since there's no Status field, we'll delete the booking to "cancel" it
+            await _bookingRepository.DeleteAsync(id);
             
             return Result.Success();
         }
@@ -359,21 +300,20 @@ public class BookingService : IBookingService
         try
         {
             var bookings = await _bookingRepository.GetAllAsync();
-            var filteredBookings = bookings.Where(b => b.ReservationDate.Date == date.Date);
+            var filteredBookings = bookings.Where(b => b.DateTime.Date == date.Date);
             
             var bookingDtos = filteredBookings.Select(b => new BookingDto
             {
                 Id = b.Id,
-                CustomerName = b.CustomerName,
-                CustomerEmail = b.CustomerEmail,
-                CustomerPhone = b.CustomerPhone,
-                TableLocationId = b.TableLocationId,
-                ReservationDate = b.ReservationDate,
+                FullName = b.FullName,
+                Email = b.Email,
+                PhoneNumber = b.PhoneNumber,
+                DateTime = b.DateTime,
                 NumberOfGuests = b.NumberOfGuests,
-                SpecialRequests = b.SpecialRequests,
-                Status = b.Status,
-                CreatedAt = b.CreatedAt
-            }).OrderBy(b => b.ReservationDate).ToList();
+                TableLocation = b.TableLocation,
+                SpecialRequest = b.SpecialRequest,
+                CreatedAt = DateTime.Now
+            }).OrderBy(b => b.DateTime).ToList();
 
             return Result<IEnumerable<BookingDto>>.Success(bookingDtos);
         }
@@ -383,7 +323,7 @@ public class BookingService : IBookingService
         }
     }
 
-    // NEW METHOD: GetBookingsByDateRangeAsync
+    // GetBookingsByDateRangeAsync
     public async Task<Result<IEnumerable<BookingDto>>> GetBookingsByDateRangeAsync(DateTime startDate, DateTime endDate)
     {
         try
@@ -395,22 +335,21 @@ public class BookingService : IBookingService
 
             var bookings = await _bookingRepository.GetAllAsync();
             var filteredBookings = bookings.Where(b => 
-                b.ReservationDate.Date >= startDate.Date && 
-                b.ReservationDate.Date <= endDate.Date);
+                b.DateTime.Date >= startDate.Date && 
+                b.DateTime.Date <= endDate.Date);
             
             var bookingDtos = filteredBookings.Select(b => new BookingDto
             {
                 Id = b.Id,
-                CustomerName = b.CustomerName,
-                CustomerEmail = b.CustomerEmail,
-                CustomerPhone = b.CustomerPhone,
-                TableLocationId = b.TableLocationId,
-                ReservationDate = b.ReservationDate,
+                FullName = b.FullName,
+                Email = b.Email,
+                PhoneNumber = b.PhoneNumber,
+                DateTime = b.DateTime,
                 NumberOfGuests = b.NumberOfGuests,
-                SpecialRequests = b.SpecialRequests,
-                Status = b.Status,
-                CreatedAt = b.CreatedAt
-            }).OrderBy(b => b.ReservationDate).ToList();
+                TableLocation = b.TableLocation,
+                SpecialRequest = b.SpecialRequest,
+                CreatedAt = DateTime.Now
+            }).OrderBy(b => b.DateTime).ToList();
 
             return Result<IEnumerable<BookingDto>>.Success(bookingDtos);
         }
@@ -424,31 +363,9 @@ public class BookingService : IBookingService
     {
         try
         {
-            if (tableLocationId <= 0)
-            {
-                return Result<bool>.Failure("Invalid table location ID", 400);
-            }
-
-            if (reservationDate <= DateTime.Now)
-            {
-                return Result<bool>.Success(false); // Past dates are not available
-            }
-
-            // Check if table location exists
-            var tableLocation = await _tableLocationRepository.GetByIdAsync(tableLocationId);
-            if (tableLocation == null)
-            {
-                return Result<bool>.Success(false); // Non-existent table is not available
-            }
-
-            var existingBookings = await _bookingRepository.GetAllAsync();
-            var isAvailable = !existingBookings.Any(b => 
-                b.TableLocationId == tableLocationId &&
-                b.ReservationDate.Date == reservationDate.Date &&
-                Math.Abs((b.ReservationDate - reservationDate).TotalHours) < 2 &&
-                b.Status != "Cancelled");
-
-            return Result<bool>.Success(isAvailable);
+            // Note: This method signature doesn't match our string-based TableLocation
+            // We should probably deprecate this in favor of string-based method
+            return Result<bool>.Failure("Method deprecated - use CheckTableAvailabilityAsync with string tableLocation", 400);
         }
         catch (Exception ex)
         {
@@ -456,7 +373,7 @@ public class BookingService : IBookingService
         }
     }
 
-    // NEW METHOD: CheckTableAvailabilityAsync
+    // CheckTableAvailabilityAsync
     public async Task<Result<bool>> CheckTableAvailabilityAsync(string tableLocationName, DateTime reservationDate, int duration)
     {
         try
@@ -471,23 +388,13 @@ public class BookingService : IBookingService
                 return Result<bool>.Success(false); // Past dates are not available
             }
 
-            // Find table by name
-            var allTables = await _tableLocationRepository.GetAllAsync();
-            var table = allTables.FirstOrDefault(t => t.TableName.Equals(tableLocationName, StringComparison.OrdinalIgnoreCase));
-            
-            if (table == null)
-            {
-                return Result<bool>.Success(false); // Non-existent table is not available
-            }
-
             var existingBookings = await _bookingRepository.GetAllAsync();
             var endTime = reservationDate.AddHours(duration);
             
             var isAvailable = !existingBookings.Any(b => 
-                b.TableLocationId == table.Id &&
-                b.Status != "Cancelled" &&
-                !(b.ReservationDate.AddHours(2) <= reservationDate || // Booking ends before our start
-                  b.ReservationDate >= endTime)); // Booking starts after our end
+                b.TableLocation.Equals(tableLocationName, StringComparison.OrdinalIgnoreCase) &&
+                !(b.DateTime.AddHours(2) <= reservationDate || // Booking ends before our start
+                  b.DateTime >= endTime)); // Booking starts after our end
 
             return Result<bool>.Success(isAvailable);
         }
@@ -501,29 +408,9 @@ public class BookingService : IBookingService
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(status))
-            {
-                return Result<IEnumerable<BookingDto>>.Failure("Status cannot be empty", 400);
-            }
-
-            var bookings = await _bookingRepository.GetAllAsync();
-            var filteredBookings = bookings.Where(b => b.Status.Equals(status, StringComparison.OrdinalIgnoreCase));
-            
-            var bookingDtos = filteredBookings.Select(b => new BookingDto
-            {
-                Id = b.Id,
-                CustomerName = b.CustomerName,
-                CustomerEmail = b.CustomerEmail,
-                CustomerPhone = b.CustomerPhone,
-                TableLocationId = b.TableLocationId,
-                ReservationDate = b.ReservationDate,
-                NumberOfGuests = b.NumberOfGuests,
-                SpecialRequests = b.SpecialRequests,
-                Status = b.Status,
-                CreatedAt = b.CreatedAt
-            }).OrderBy(b => b.ReservationDate).ToList();
-
-            return Result<IEnumerable<BookingDto>>.Success(bookingDtos);
+            // Note: Booking model doesn't have Status field
+            // This method might not be applicable or we need to add Status to model
+            return Result<IEnumerable<BookingDto>>.Failure("Booking status filtering not supported - no Status field in model", 400);
         }
         catch (Exception ex)
         {
@@ -531,7 +418,7 @@ public class BookingService : IBookingService
         }
     }
 
-    // NEW METHOD: GetBookingStatisticsAsync
+    // GetBookingStatisticsAsync
     public async Task<Result<object>> GetBookingStatisticsAsync()
     {
         try
@@ -541,16 +428,17 @@ public class BookingService : IBookingService
             var statistics = new
             {
                 TotalBookings = bookings.Count(),
-                ConfirmedBookings = bookings.Count(b => b.Status == "Confirmed"),
-                CompletedBookings = bookings.Count(b => b.Status == "Completed"),
-                CancelledBookings = bookings.Count(b => b.Status == "Cancelled"),
-                NoShowBookings = bookings.Count(b => b.Status == "No-Show"),
-                TodayBookings = bookings.Count(b => b.ReservationDate.Date == DateTime.Today),
-                ThisWeekBookings = bookings.Count(b => b.ReservationDate.Date >= DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek) && 
-                                                      b.ReservationDate.Date < DateTime.Today.AddDays(7 - (int)DateTime.Today.DayOfWeek)),
-                ThisMonthBookings = bookings.Count(b => b.ReservationDate.Month == DateTime.Now.Month && 
-                                                        b.ReservationDate.Year == DateTime.Now.Year),
-                AverageGuestsPerBooking = bookings.Any() ? bookings.Average(b => b.NumberOfGuests) : 0
+                TodayBookings = bookings.Count(b => b.DateTime.Date == DateTime.Today),
+                ThisWeekBookings = bookings.Count(b => b.DateTime.Date >= DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek) && 
+                                                      b.DateTime.Date < DateTime.Today.AddDays(7 - (int)DateTime.Today.DayOfWeek)),
+                ThisMonthBookings = bookings.Count(b => b.DateTime.Month == DateTime.Now.Month && 
+                                                        b.DateTime.Year == DateTime.Now.Year),
+                AverageGuestsPerBooking = bookings.Any() ? bookings.Average(b => b.NumberOfGuests) : 0,
+                PopularTableLocations = bookings.GroupBy(b => b.TableLocation)
+                                               .Select(g => new { TableLocation = g.Key, Count = g.Count() })
+                                               .OrderByDescending(x => x.Count)
+                                               .Take(5)
+                                               .ToList()
             };
 
             return Result<object>.Success(statistics);
