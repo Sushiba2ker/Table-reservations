@@ -21,9 +21,15 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<IProductRepository, EFProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 builder.Services.AddScoped<ITableLocationRepository, EFTableLocationRepository>();
+builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
+builder.Services.AddScoped<IBookingRepository, EFBookingRepository>();
 
 // Service layer registrations
 builder.Services.AddScoped<BT3_TH.Services.Interfaces.IProductService, BT3_TH.Services.ProductService>();
+builder.Services.AddScoped<BT3_TH.Services.Interfaces.ICategoryService, BT3_TH.Services.CategoryService>();
+builder.Services.AddScoped<BT3_TH.Services.Interfaces.IOrderService, BT3_TH.Services.OrderService>();
+builder.Services.AddScoped<BT3_TH.Services.Interfaces.IBookingService, BT3_TH.Services.BookingService>();
+builder.Services.AddScoped<BT3_TH.Services.Interfaces.ITableLocationService, BT3_TH.Services.TableLocationService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
